@@ -1,56 +1,56 @@
-// Simple graph class. TODO: Consider using a class instead?
+// Simple graph class.
 
 #include <vector>
+#include <string>
 
 namespace graph {
 
-enum CardinalDirections {
-  NORTH = 0;
-  EAST = 1;
-  SOUTH = 2;
-  WEST = 3;
+enum CardinalDirection {
+  ERROR = 0,
+  NORTH = 1,
+  EAST = 2,
+  SOUTH = 3,
+  WEST = 4,
 };
 
-struct LatLong {
-  float lat;
-  float lon;
-};
+typedef struct {
+  double lat;
+  double lon;
+} LatLong;
 
-struct HalfEdgeData {
-  int index;
-  LatLong latlong;
-  string intersection;
-}
-
-class Edge {
- public:
-  ~Edge() { }
-  HalfEdgeData source;
-  HalfEdgeData dest;
+typedef struct {
+  int from_id;
+  int to_id;
   float length;
   CardinalDirection direction;
-  sting street_name;
-};
+  std::string street_name;
+} Edge;
 
 class Node {
- public:
-  int index;
-  LatLong latlong;
+public:
+  Node() { index_ = -1; }
+  void Initialize(const int index, const LatLong &latlong, const std::string &intersection) {
+    index_ = index;
+    latlong_ = latlong;
+    intersection_ = intersection;
+  }
+  int index_;
+  LatLong latlong_;
   // Can we get this in canonical form?
-  string intersection;
+  std::string intersection_;
   // Indices of neighbors in the nodes vector in Graph.
-  std::vector<Edge> edges;
+  std::vector<Edge> edges_;
   // Should this really live inside the Node class?
-  std::vector<int> 30-min-neighbors;
+  std::vector<int> neighborhood_30_min;
 };
 
 class Graph {
  public:
   ~Graph() { };
-  BuildFromCSVFile(const string& filename);
+  int BuildFromCSVFile(const std::string &filename);
  private:
-  AddEdge(const string& csv_edge_line);
-  std::Vector<GraphNode> nodes;
+  bool AddEdge(const std::vector<std::string> &tokens);
+  std::vector<Node> nodes_;
 };
 
 }  // namespace graph
